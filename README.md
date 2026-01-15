@@ -106,3 +106,7 @@ Now click on "ESPHome Builder" again and click on your ESPHome device that we ju
 We'll also set up the touchscreen so that if you touch it, the backlight toggles so you can easily turn it off and back on.
 
 Once the code is in, click on "Install" and you can select "Wirelessly" to have the code compiled and updated over the air.  
+
+It may take several minutes for the code to compile and upload.  You can follow along on the screen to see progress and see any errors that come up.  Where will be warnings about the pins you're using but they can be safely ignored.
+
+Once the code has been compiled and uploaded the device will reset and you should see a screen with a timestamp of 1969-12-31 at 19:00:00 and the second line says "Loading...".  This indicates that the code is running but it's not able to reach HA yet.  This could be because it can't get connected to Wifi, or it could be that it's not getting a response from HA.  It can take several seconds for this to resolve and then the correct time and date should appear followed by the current outside temperature and weather status.  If it doesn't, you can unplug and replug in the device or check the onscreen logs for more information.
