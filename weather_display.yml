@@ -1,0 +1,147 @@
+esphome:
+  name: esphome-web-bae684
+  friendly_name: ESPHome Web bae684
+  min_version: 2025.11.0
+  name_add_mac_suffix: false
+
+esp32:
+  variant: esp32
+  framework:
+    type: esp-idf
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Allow Over-The-Air updates
+ota:
+- platform: esphome
+    
+packages:
+  wifi: !include common/wifi.yml
+
+color:
+  - id: blue
+    red: 0%
+    green: 0%
+    blue: 100%
+  - id: white
+    red: 100%
+    green: 100%
+    blue: 100%
+
+font:
+  - file: "fonts/helvetica.ttf"
+    id: helvetica_48
+    size: 48
+  - file: "fonts/helvetica.ttf"
+    id: helvetica_36
+    size: 36
+  - file: "fonts/helvetica.ttf"
+    id: helvetica_24
+    size: 24
+  - file: "fonts/helvetica.ttf"
+    id: helvetica_12
+    size: 12
+
+spi:
+  - id: lcd
+    clk_pin: GPIO14
+    mosi_pin: GPIO13
+    miso_pin: GPIO12
+  - id: touch
+    clk_pin: GPIO25
+    mosi_pin: GPIO32
+    miso_pin: GPIO39
+
+time:
+  - platform: homeassistant
+    id: esp_time 
+
+sensor:
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_temperature
+    id: owm_temp
+
+text_sensor:
+  - platform: homeassistant
+    entity_id: sensor.openweathermap_condition
+    id: owm_condition
+
+display:
+  - platform: ili9xxx
+    invert_colors: false
+    model: ILI9341
+    color_palette: 8BIT
+    rotation: 90
+    spi_id: lcd
+    cs_pin: 15
+    dc_pin: 2
+    lambda: |-
+      it.rectangle(0,  0, it.get_width(), it.get_height(), id(blue));
+      it.rectangle(0, 35, it.get_width(), it.get_height(), id(blue));
+
+      it.strftime(5, 5, id(helvetica_24), id(white), TextAlign::TOP_LEFT, "%m-%d-%Y %H:%M:%S", id(esp_time).now());
+
+      if (!isnan(id(owm_temp).state)) {
+        it.printf(5, 50, id(helvetica_24), id(white), "Temperature: %.1f °F", id(owm_temp).state);
+        it.printf(5, 80, id(helvetica_24), id(white), "Weather: %s", id(owm_condition).state.c_str());
+      } else {
+        it.print(5, 50, id(helvetica_24), id(white), "Loading...");
+      }
+
+
+# Define pins for backlight display and back LED1
+output:
+  - platform: ledc
+    pin: GPIO21
+    id: former_led_pin
+  - platform: ledc
+    id: output_red
+    pin: GPIO4
+    inverted: true
+  - platform: ledc
+    id: output_green
+    pin: GPIO16
+    inverted: true
+  - platform: ledc
+    id: output_blue
+    pin: GPIO17
+    inverted: true
+
+# Define a monochromatic, dimmable light for the backlight
+light:
+  - platform: monochromatic
+    output: former_led_pin
+    name: "Display Backlight"
+    id: back_light
+    restore_mode: ALWAYS_ON
+  - platform: rgb
+    name: LED
+    red: output_red
+    id: led
+    green: output_green
+    blue: output_blue
+    restore_mode: ALWAYS_OFF
+
+touchscreen:
+  platform: xpt2046
+  spi_id: touch
+  cs_pin: 33
+  interrupt_pin: 36
+  update_interval: 50ms
+  threshold: 400
+  calibration:
+    x_min: 280
+    x_max: 3860
+    y_min: 340
+    y_max: 3860
+  transform:
+    mirror_x: true
+    mirror_y: false
+    swap_xy: false
+  on_touch:                        #If the screen is touched, toggle the backlight on or off
+    then:
+      - light.toggle: back_light
