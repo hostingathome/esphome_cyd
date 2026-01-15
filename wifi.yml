@@ -1,0 +1,8 @@
+wifi:
+  ssid: "YOUR_SSID"
+  password: "YOUR_PASSWORD"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Espwifi Fallback Hotspot"
+    password: "RANDOM_PASSWORD"
