@@ -5,6 +5,7 @@ Setting up and using a Cheap Yellow Device (CYD) with ESPHome/Home Assistant
 The CYD is a very inexpensive (aka cheap) 2.8" display with an ESP32 board attached to it.  The name refers to the fact that the PCB is yellow.  My board has the model number ESP32-2432S028.  Requiring only a USB-C power supply, it can provide a wifi-enabled display wherever you want it.  You can pick them up from AliExpress for under $10 or from Amazon for under $20 if you want it quicker.  Did I mention it has a touch screen too?  Yeah, it has a touch screen. And two physical buttons on the back. And GPIO pins if you want to attach your own sensors - but we won't go into that here.
 ![PXL_20260114_192745171](https://github.com/user-attachments/assets/74834e1d-38f9-47ab-8736-58f110fb12f1)
 *Case as it arrived.  Some might have an acrylic case with it for a little extra cost*
+
 ![PXL_20260114_192821128](https://github.com/user-attachments/assets/2ab31e10-d0ca-4cc2-8cfa-7f82bdbf5b96)
 *Back showing the model number*
 
@@ -38,24 +39,31 @@ When you first power it on by plugging into a 5V supply you may get a simple dis
 Unlike standard PCs or Raspberry Pis, ESP32 devices don't have an operating system that we'd recognize on it.  Instead, it has firmwre and acts like an embedded device (since..it's an embedded device).  The nice thing is that once you have the firmware installed and connected to HA, you can update the code at any time wirelessly, also known as Over The Air (OTA).
 
 From your computer go to the [ESPHome Web](https://web.esphome.io/) and make sure your device is plugged in and running.
+
 <img width="528" height="560" alt="Click on Connect" src="https://github.com/user-attachments/assets/dae59d61-53f1-425c-80fd-d948d241898a" />
 
 Click on "connect" and then select the correct serial port.  Since I'm using Linux, this will be `ttyUSB0`
+
 <img width="434" height="452" alt="Select the correct serial port" src="https://github.com/user-attachments/assets/1ed7b31c-f3a5-4cd5-bdba-78148fb47911" />
 
 First off, you'll want to get the basic firmware installed.  Click on "Prepare for first use"
+
 <img width="474" height="147" alt="Click on prepare for first use" src="https://github.com/user-attachments/assets/eef7a2b4-c417-44fe-b832-b3d423b28fba" />
 
 Then click "Install"
+
 <img width="576" height="281" alt="Click on Install" src="https://github.com/user-attachments/assets/1908a85f-5837-454b-8a06-983f478e4e86" />
 
 It's going to take a minute or two for this to upload so keep the system from going to sleep.
+
 <img width="386" height="245" alt="Upload in progress" src="https://github.com/user-attachments/assets/7465e73e-8c21-4ed7-ab1b-c229720ff6c2" />
 
 With the firmware installed you can now connect it to your wifi
+
 <img width="322" height="320" alt="Click Change Wi-fi" src="https://github.com/user-attachments/assets/6a87b96f-a503-4f2c-847d-f920b21e857e" />
 
 From the ESPHome Web screen you can also click on the three pips on the right side and click "Configure Wi-Fi"
+
 <img width="333" height="264" alt="Configure Wi-Fi" src="https://github.com/user-attachments/assets/04e24148-85cb-42a5-a291-a0df58a88630" />
 
 Enter the wifi name and password and it should now be online and visibile to Home Assistant.  Stupid me let me laptop go to sleep while the firmware was being loaded.  You can repeat the steps to get it working.
@@ -65,20 +73,25 @@ Enter the wifi name and password and it should now be online and visibile to Hom
 Now that the CYD has the firmware and online we can get it into HA and start expanding capabilities.  At this point the screen is just plain black and it appears dead.  Trust me, it's not, it's waiting.
 
 Go to Settings -> Devices & Services and the new device should be there (along with any other devices that HA might have found.  Click Add to have the device added.
+
 <img width="318" height="279" alt="Click Add to have device added to Home Assistant" src="https://github.com/user-attachments/assets/2f8c29ab-2b7f-4aef-958b-5a54a66a2772" />
 
 From the HA screen click on "ESPHome Builder" 
 
 Since the device isn't controlled by ESPHome Builder yet, it won't appear on the list and your screen may be blank.  Click on the Show in the upper right corner.
+
 <img width="318" height="279" alt="Click on Show" src="https://github.com/user-attachments/assets/379f0e8d-0464-4bff-82af-58f91f54808b" />
 
 You should now see at least one device that says "ESPHome Web" and an option to Take control.
+
 <img width="392" height="183" alt="Take Control" src="https://github.com/user-attachments/assets/7bd16d48-7852-4705-bb58-48e6992b07fc" />
 
 You may be asked to re-enter the Wi-Fi credentias
+
 <img width="400" height="756" alt="Re-enter Wifi credentials" src="https://github.com/user-attachments/assets/5fc44e86-8dae-4fee-8438-bbd0208061eb" />
 
 Click Install to put on a base ESPHome 
+
 <img width="393" height="202" alt="Click install" src="https://github.com/user-attachments/assets/5c8eb03e-9e90-4015-9ee1-2efa309ee610" />
 
 # Uploading code
