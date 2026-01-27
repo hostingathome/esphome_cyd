@@ -18,9 +18,10 @@ api:
 # Allow Over-The-Air updates
 ota:
 - platform: esphome
-    
-packages:
-  wifi: !include common/wifi.yml
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
 
 color:
   - id: blue
